@@ -6,3 +6,5 @@ langchain_mistralai
 pydantic
 pandas
 opencv-python
+stringmatch
+python-dateutil

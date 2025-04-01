@@ -7,3 +7,6 @@ Cloner le repo. Créer un environnement virtuel, l'activer, installer les dépen
 
 ## Utilisation
 Vous pouvez déposer le dossier contenant les tickets de caisse dans la boite de dépot de gauche, et le relevé bancaire dans celle de droite, puis cliquer sur le bouton valider en dessous. Après vous pourrez visualiser les résultats dans l'interface, et les télécharger au format .xls 
+
+##
+A l'heure actuelle, la partie Matching marche avec un csv donné manuellement et les résultats sont stockées dans un autre csv à la racine de matching.py, et nécessite beaucoup de corrections.
