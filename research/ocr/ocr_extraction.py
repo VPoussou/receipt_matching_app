@@ -7,6 +7,7 @@ from typing import List
 from langchain_mistralai.chat_models import ChatMistralAI
 from datetime import date
 import os
+import cv2
 
 async def ocr_extraction(image_path):
     dotenv.load_dotenv()
@@ -22,13 +23,15 @@ async def ocr_extraction(image_path):
         total_price: float = Field(description="The total price found in the document.")
         currency: str | None = Field(description="The currency of the total price (e.g., USD, EUR, GBP) Do not make it up if not present.")
 
-
     # 2. Image to Base64 Encoding (if needed) - Moved here for clarity
-    async def encode_image_to_base64(image_path):
+    async def encode_and_preprocess_image_to_base64(image_path):
         """Encodes an image from a file path to a base64 string."""
+        img = cv2.imread(image_path)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
         try:
-            with open(image_path, "rb") as image_file:
-                return base64.b64encode(image_file.read()).decode('utf-8')
+                _, buffer = cv2.imencode('.jpg', thresh)
+                return base64.b64encode(buffer).decode('utf-8')
         except Exception as e:
             print(f"Error encoding image to base64: {e}")
             return None
@@ -48,7 +51,7 @@ async def ocr_extraction(image_path):
     parser = PydanticOutputParser(pydantic_object=ExtractedData)
 
     message = HumanMessagePromptTemplate.from_template(template=PROMPT)
-    encoded_image_url = f'data:image/jpeg;base64,{await encode_image_to_base64(image_path)}'
+    encoded_image_url = f'data:image/jpeg;base64,{await encode_and_preprocess_image_to_base64(image_path)}'
     role_message = {
         "role":"system",
         "content": [

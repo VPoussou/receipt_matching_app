@@ -43,7 +43,7 @@ async def retrieve_data_from_images(folder_path, rate_limit=10, period=3):  #Ima
 if __name__ == "__main__":
     async def main():
         """Main function to execute the image processing."""
-        folder_path = 'research/ocr/receipts/'
+        folder_path = 'research/ocr/receipts_small/'
         rate_limit = 3 #Process 2 images
         period = 3 # every 5 seconds
         data = await retrieve_data_from_images(folder_path, rate_limit, period)
@@ -62,4 +62,4 @@ if __name__ == "__main__":
 
     df = pd.DataFrame(structured_data)
     print(df.head())
-    df.to_csv('export.csv')
+    df.to_csv('export2.csv')
