@@ -2,8 +2,9 @@ import asyncio
 from ocr_extraction import ocr_extraction  # Your OCR logic
 import glob
 import time
+import pandas as pd
 
-async def retrieve_data_from_images(folder_path, rate_limit=5, period=60):  #Images processed every 60 seconds (default)
+async def retrieve_data_from_images(folder_path, rate_limit=10, period=3):  #Images processed every 60 seconds (default)
     """
     Asynchronously retrieves data from images in a folder, respecting rate limits.
     Returns:
@@ -42,10 +43,23 @@ async def retrieve_data_from_images(folder_path, rate_limit=5, period=60):  #Ima
 if __name__ == "__main__":
     async def main():
         """Main function to execute the image processing."""
-        folder_path = './'
-        rate_limit = 2 #Process 2 images
-        period = 5 # every 5 seconds
+        folder_path = 'research/ocr/receipts/'
+        rate_limit = 3 #Process 2 images
+        period = 3 # every 5 seconds
         data = await retrieve_data_from_images(folder_path, rate_limit, period)
-        print(data)
+        return data
 
-    asyncio.run(main())
+    data_for_restructuring = asyncio.run(main())
+    print(data_for_restructuring)
+    structured_data = {
+        'filename' : data_for_restructuring.keys(),
+        'date_of_purchase' : [value.date_of_purchase for _, value in data_for_restructuring.items()],
+        'name_of_store' : [value.name_of_store for _, value in data_for_restructuring.items()],
+        'address' : [value.address for _, value in data_for_restructuring.items()],
+        'total_price' : [value.total_price for _, value in data_for_restructuring.items()],
+        'currency' : [value.currency for _, value in data_for_restructuring.items()]
+    }
+
+    df = pd.DataFrame(structured_data)
+    print(df.head())
+    df.to_csv('export.csv')
