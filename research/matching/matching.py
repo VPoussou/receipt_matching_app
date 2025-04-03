@@ -6,6 +6,7 @@ import numpy as np
 from dateutil import parser
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+import glob
 
 # On oublie ces lignes là, il faut juste fournir un csv en entrée à la place et le convertir en dataframe
 
@@ -44,7 +45,7 @@ def data_matching(source_csv, ocr_df):
     # Pareil, changer le chemin en entrée selon ce que fournit l'OCR
     
     ocr_output = ocr_df
-    whole_df = pd.read_csv(source_csv)
+    whole_df = pd.read_csv(glob.glob(source_csv + '/')[0])
     
     def parse_date_safely(date_str):
         # Ne rien faire si la valeur est vide ou autre chose qu'une string
