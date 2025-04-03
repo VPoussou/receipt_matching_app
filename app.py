@@ -9,6 +9,7 @@ import os
 import asyncio
 import io
 
+excel_data = 'donkey'
 async def start_matching(csv_file_path, image_files_path):
     print(f"[mistral_ocr] Received folder_path: {image_files_path}") # DEBUG
     ocr_df = await mistral_ocr(image_files_path)
@@ -180,7 +181,7 @@ st.subheader("Download as Excel")
 
 st.download_button(
     label="📥 Download Excel File",
-    data= None |excel_data,  # The bytes object to download
+    data= excel_data,  # The bytes object to download
     file_name='assigned_data_download.xlsx',  # The default filename
     mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',  # Mime type for Excel files (.xlsx)
     help="Click to download the DataFrame as an Excel file"
