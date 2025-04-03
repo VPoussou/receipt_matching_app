@@ -12,7 +12,7 @@ import streamlit as st
 
 async def ocr_extraction(image_path):
     dotenv.load_dotenv()
-    MISTRAL_API_KEY = st.secrets['MISTRAL_API_KEY'] | os.environ["MISTRAL_API_KEY"]
+    MISTRAL_API_KEY = st.secrets['MISTRAL_API_KEY']
 
     # 1. Define Pydantic Output Model
     class ExtractedData(BaseModel):
