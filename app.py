@@ -2,11 +2,20 @@ import streamlit as st
 import os
 import base64
 import pandas as pd
+from research.ocr.main import mistral_ocr
+from research.matching.matching_test import matching_function
+import tempfile
+import os
+import asyncio
+import glob
 
+async def start_matching(csv_file_path, image_files_path):
+    print(f"[mistral_ocr] Received folder_path: {image_files_path}") # DEBUG
+    ocr_df = await mistral_ocr(image_files_path)
+    assigned_df, unassigned_df = matching_function(csv_file_path, ocr_df)
+    st.session_state.assigned_df = assigned_df
+    st.session_state.unassigned_df = unassigned_df
 
-def start_matching():
-    """ function placeholder for the matching process."""
-    pass
 
 
 st.set_page_config(page_title="Invoice Matcher", layout="wide")
@@ -102,8 +111,33 @@ with right_main:
     st.header("Matching & Details")
 
     if st.button("Start Matching"):
-        start_matching()  # Currently does nothing
-        st.success("Matching process (placeholder).")
+        if uploaded_csvs and uploaded_receipts:
+            receipt_path = '/receipts'
+            try:
+                os.mkdir(receipt_path)
+            except FileExistsError:
+                print('file exists')
+            with tempfile.TemporaryDirectory() as statements_tempdir:
+                for receipt_file in uploaded_receipts:
+                    file_path = os.path.join(receipt_path, receipt_file.name)
+                    print(receipt_file.name)
+                    with open(file_path, "wb") as f:
+                        f.write(receipt_file.read())
+                #         print(f"--- Successfully wrote receipt: {file_path}") # DEBUG
+                # for file in glob.glob(receipt_path + '/*'):
+                #     print(f' donkey {file}' )
+
+                csv_file_path = os.path.join(statements_tempdir, uploaded_csvs[0].name)
+                with open(csv_file_path, "wb") as f:
+                    f.write(uploaded_csvs[0].getvalue())
+                try:
+                    loop = asyncio.get_running_loop()
+                except RuntimeError:
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+                loop.run_until_complete(start_matching(statements_tempdir, receipt_path))
+                st.success("Matching process")
+                # os.remove(receipt_path)
 
     st.divider()
 
@@ -122,4 +156,6 @@ with right_main:
 
     st.divider()
 
-    st.subheader("Preview of export.xlsx")
+    with st.subheader("Preview of export.xlsx"):
+        if 'assigned_df' in st.session_state:
+            st.dataframe(st.session_state.assigned_df)

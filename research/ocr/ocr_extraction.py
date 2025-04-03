@@ -17,7 +17,7 @@ async def ocr_extraction(image_path):
     class ExtractedData(BaseModel):
         """Represents extracted data from a document."""
 
-        date_of_purchase: date | str = Field(description="The date found in the document (YYYY-MM-DD).")
+        date_of_purchase: date | str = Field(description="The date found in the document (YYYY-MM-DD). If not date is found return an empty string")
         name_of_store: str = Field(description="The name of the vendor or store in the document")
         address: str = Field(description="The full address found in the document.")
         total_price: float = Field(description="The total price found in the document.")
@@ -72,5 +72,6 @@ async def ocr_extraction(image_path):
 
     response = chat_mistral.invoke(chat_prompt_with_values.to_messages())
     data = parser.parse(response.content)
-    # print(data)
-    return(data)
+    
+
+    return(data )
