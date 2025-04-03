@@ -64,7 +64,7 @@ def data_matching(source_csv, ocr_df):
     
     ocr_output['vendor'] = ocr_output['name_of_store'].astype(str) + ' ' + (ocr_output['address'].astype(str))
     
-    ocr_output['filename'] = ocr_output['filename'].str.replace(r'^.*\\', '', regex=True)
+    ocr_output['filename'] = ocr_output['filename'].astype(str).str.replace(r'^.*\\', '', regex=True)
     
     #ocr_output.to_csv("export_fixed.csv", sep=",", index=False)
     
