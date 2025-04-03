@@ -4,7 +4,7 @@ import glob
 import time
 import pandas as pd
 
-async def retrieve_data_from_images(folder_path, rate_limit=10, period=3):  #Images processed every 60 seconds (default)
+async def retrieve_data_from_images(folder_path, rate_limit=50, period=2):  #Images processed every 60 seconds (default)
     """
     Asynchronously retrieves data from images in a folder, respecting rate limits.
     Returns:

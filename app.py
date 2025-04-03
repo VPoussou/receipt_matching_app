@@ -112,11 +112,11 @@ with right_main:
 
     if st.button("Start Matching"):
         if uploaded_csvs and uploaded_receipts:
-            receipt_path = '/receipts'
+            receipt_path = '/receipts2'
             try:
                 os.mkdir(receipt_path)
             except FileExistsError:
-                print('file exists')
+                print('folder exists')
             with tempfile.TemporaryDirectory() as statements_tempdir:
                 for receipt_file in uploaded_receipts:
                     file_path = os.path.join(receipt_path, receipt_file.name)
@@ -137,7 +137,7 @@ with right_main:
                     asyncio.set_event_loop(loop)
                 loop.run_until_complete(start_matching(statements_tempdir, receipt_path))
                 st.success("Matching process")
-                # os.remove(receipt_path)
+                os.remove(receipt_path)
 
     st.divider()
 
