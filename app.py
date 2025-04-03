@@ -118,7 +118,7 @@ with right_main:
             # except FileExistsError:
             #     print('folder exists')
             with tempfile.TemporaryDirectory() as statements_tempdir:
-                with tempfile.TemporaryDirectory as receipts_tempdir:
+                with tempfile.TemporaryDirectory() as receipts_tempdir:
                     for receipt_file in uploaded_receipts:
                         file_path = os.path.join(receipts_tempdir, receipt_file.name)
                         print(receipt_file.name)

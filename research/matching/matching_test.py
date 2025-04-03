@@ -268,4 +268,4 @@ def matching_function(
         unassigned_df = None
 
     print("\nMatching process completed.")
-    return whole_df, unassigned_df if unassigned_df.empty else None
+    return whole_df, unassigned_df
