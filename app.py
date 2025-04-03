@@ -178,16 +178,13 @@ with right_main:
 
 st.subheader("Download as Excel")
 
-if not st.session_state.assigned_df.empty:
-    pass
-else:
-    st.download_button(
-        label="📥 Download Excel File",
-        data=excel_data,  # The bytes object to download
-        file_name='assigned_data_download.xlsx',  # The default filename
-        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',  # Mime type for Excel files (.xlsx)
-        help="Click to download the DataFrame as an Excel file"
-    )
+st.download_button(
+    label="📥 Download Excel File",
+    data= None |excel_data,  # The bytes object to download
+    file_name='assigned_data_download.xlsx',  # The default filename
+    mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',  # Mime type for Excel files (.xlsx)
+    help="Click to download the DataFrame as an Excel file"
+)
 
 # st.markdown("---")
 # st.write("Click the button above to download the data.")
