@@ -149,7 +149,7 @@ with right_main:
                     except RuntimeError:
                         loop = asyncio.new_event_loop()
                         asyncio.set_event_loop(loop)
-                    loop.run_until_complete(start_matching(statements_tempdir + uploaded_csvs[0].name, receipts_tempdir))
+                    loop.run_until_complete(start_matching(statements_tempdir + r'/' + uploaded_csvs[0].name, receipts_tempdir))
                     st.success("Matching process")
                     # Convert the DataFrame to Excel bytes
                     excel_data = convert_df_to_excel(st.session_state.assigned_df)
