@@ -7,7 +7,7 @@ from research.matching.matching_test import matching_function
 import tempfile
 import os
 import asyncio
-import glob
+import io
 
 async def start_matching(csv_file_path, image_files_path):
     print(f"[mistral_ocr] Received folder_path: {image_files_path}") # DEBUG
@@ -159,3 +159,31 @@ with right_main:
     with st.subheader("Preview of export.xlsx"):
         if 'assigned_df' in st.session_state:
             st.dataframe(st.session_state.assigned_df)
+
+@st.cache_data
+def convert_df_to_excel(df):
+    """Converts a Pandas DataFrame to an Excel file in-memory."""
+    output = io.BytesIO()
+    # Use ExcelWriter context manager for better handling
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Sheet1')
+        # You could add more sheets here if needed:
+        # df2.to_excel(writer, index=False, sheet_name='Sheet2')
+    processed_data = output.getvalue()
+    return processed_data
+
+# Convert the DataFrame to Excel bytes
+excel_data = convert_df_to_excel(st.session_state.assigned_df)
+
+st.subheader("Download as Excel")
+
+st.download_button(
+    label="📥 Download Excel File",
+    data=excel_data,  # The bytes object to download
+    file_name='assigned_data_download.xlsx',  # The default filename
+    mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',  # Mime type for Excel files (.xlsx)
+    help="Click to download the DataFrame as an Excel file"
+)
+
+st.markdown("---")
+st.write("Click the button above to download the data.")
