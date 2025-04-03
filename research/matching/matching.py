@@ -45,7 +45,7 @@ def data_matching(source_csv, ocr_df):
     # Pareil, changer le chemin en entrée selon ce que fournit l'OCR
     
     ocr_output = ocr_df
-    whole_df = pd.read_csv(glob.glob(source_csv + '/')[0])
+    whole_df = pd.read_csv(glob.glob(source_csv + '/.csv'))
     
     def parse_date_safely(date_str):
         # Ne rien faire si la valeur est vide ou autre chose qu'une string
