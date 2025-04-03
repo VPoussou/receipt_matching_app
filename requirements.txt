@@ -9,6 +9,6 @@ opencv-python
 stringmatch
 python-dateutil
 openpyxl
-transformers >= 5.0.0
+transformers == 4.0.1
 torch == 2.6.0
 sentence-transformers 
