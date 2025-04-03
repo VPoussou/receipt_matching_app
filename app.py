@@ -112,7 +112,7 @@ with right_main:
 
     if st.button("Start Matching"):
         if uploaded_csvs and uploaded_receipts:
-            receipt_path = '/receipts2'
+            receipt_path = '/receipts3'
             try:
                 os.mkdir(receipt_path)
             except FileExistsError:
