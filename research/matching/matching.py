@@ -1,7 +1,7 @@
 
 import torch
-import pandas as pd
 import os
+import pandas as pd
 import numpy as np
 from dateutil import parser
 from sentence_transformers import SentenceTransformer
@@ -9,6 +9,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 # On oublie ces lignes là, il faut juste fournir un csv en entrée à la place et le convertir en dataframe
 
+
+torch.classes.__path__ = [os.path.join(torch.__path__[0], torch.classes.__file__)] 
 r = """
 
 path_to_csv_folder = "bank_statements\\"
