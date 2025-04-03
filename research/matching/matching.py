@@ -34,12 +34,12 @@ def get_best_match_with_transformer(query, candidates, model):
     best_idx = similarities.argmax()
     return candidates[best_idx], similarities[best_idx]
 
-def data_matching(source_csv, ocr_csv):
+def data_matching(source_csv, ocr_df):
 
     #Pre-traitement des données OCR d'entrée
     # Pareil, changer le chemin en entrée selon ce que fournit l'OCR
     
-    ocr_output = pd.read_csv(ocr_csv)
+    ocr_output = ocr_df
     whole_df = pd.read_csv(source_csv)
     
     def parse_date_safely(date_str):
@@ -118,4 +118,4 @@ def data_matching(source_csv, ocr_csv):
     missing_pictures = list(set(picture_list) - set(whole_df['assigned_picture'].dropna()))
     
     # Ici, on renvoie le dataframe
-    return whole_df
+    return whole_df, missing_pictures
