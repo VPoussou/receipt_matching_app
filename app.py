@@ -112,32 +112,32 @@ with right_main:
 
     if st.button("Start Matching"):
         if uploaded_csvs and uploaded_receipts:
-            receipt_path = '/receipts3'
-            try:
-                os.mkdir(receipt_path)
-            except FileExistsError:
-                print('folder exists')
+            # receipt_path = '/receipts3'
+            # try:
+            #     os.mkdir(receipt_path)
+            # except FileExistsError:
+            #     print('folder exists')
             with tempfile.TemporaryDirectory() as statements_tempdir:
-                for receipt_file in uploaded_receipts:
-                    file_path = os.path.join(receipt_path, receipt_file.name)
-                    print(receipt_file.name)
-                    with open(file_path, "wb") as f:
-                        f.write(receipt_file.read())
-                #         print(f"--- Successfully wrote receipt: {file_path}") # DEBUG
-                # for file in glob.glob(receipt_path + '/*'):
-                #     print(f' donkey {file}' )
+                with tempfile.TemporaryDirectory as receipts_tempdir:
+                    for receipt_file in uploaded_receipts:
+                        file_path = os.path.join(receipts_tempdir, receipt_file.name)
+                        print(receipt_file.name)
+                        with open(file_path, "wb") as f:
+                            f.write(receipt_file.read())
+                    #         print(f"--- Successfully wrote receipt: {file_path}") # DEBUG
+                    # for file in glob.glob(receipt_path + '/*'):
+                    #     print(f' donkey {file}' )
 
-                csv_file_path = os.path.join(statements_tempdir, uploaded_csvs[0].name)
-                with open(csv_file_path, "wb") as f:
-                    f.write(uploaded_csvs[0].getvalue())
-                try:
-                    loop = asyncio.get_running_loop()
-                except RuntimeError:
-                    loop = asyncio.new_event_loop()
-                    asyncio.set_event_loop(loop)
-                loop.run_until_complete(start_matching(statements_tempdir, receipt_path))
-                st.success("Matching process")
-                os.remove(receipt_path)
+                    csv_file_path = os.path.join(statements_tempdir, uploaded_csvs[0].name)
+                    with open(csv_file_path, "wb") as f:
+                        f.write(uploaded_csvs[0].getvalue())
+                    try:
+                        loop = asyncio.get_running_loop()
+                    except RuntimeError:
+                        loop = asyncio.new_event_loop()
+                        asyncio.set_event_loop(loop)
+                    loop.run_until_complete(start_matching(statements_tempdir, receipts_tempdir))
+                    st.success("Matching process")
 
     st.divider()
 
