@@ -10,5 +10,5 @@ stringmatch
 python-dateutil
 openpyxl
 transformers >= 4.0.1, <= 4.6.0
-torch == 2.6.0
+torch 
 sentence-transformers 
