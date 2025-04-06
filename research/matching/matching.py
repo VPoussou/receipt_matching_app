@@ -75,7 +75,7 @@ def data_matching(source_csv, ocr_df):
     # Après attribution de la facture, on marque la ligne comme checked, pour ne pas la reparcourir dans les itérations successives
     
     # Initialisation de l'instance qui fait le matching
-    model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v1")
+    model = SentenceTransformer("sentence-transformers/LaBSE")
     
     # Les colonnes rajoutées pour assigner l'image et pour éliminer les lignes assignées des futures itérations
     whole_df['checked'] = False
