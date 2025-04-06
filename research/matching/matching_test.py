@@ -7,7 +7,7 @@ from dateutil import parser
 from datetime import timedelta, datetime # Import timedelta for date comparison
 
 # --- Configuration ---
-PATH_TO_CSV_FOLDER = "research/matching/bank_statements"
+# PATH_TO_CSV_FOLDER = "research/matching/bank_statements"
 # PATH_TO_OCR_EXPORT = "research/matching/export.csv"
 PATH_TO_FINAL_OUTPUT = "research/matching/matched_bank_statement.csv"
 PATH_TO_UNASSIGNED_LOG = "research/matching/unassigned_receipts.csv"
@@ -25,7 +25,7 @@ def matching_function(
     # --- Load Bank Statement Data ---
     print("Loading bank statement data...")
     df_list = []
-    current_df = pd.read_csv(PATH_TO_CSV_FOLDER)
+    current_df = pd.read_csv(PATH_TO_CSV)
     # **Crucial: Identify and standardize bank statement columns here**
     # **Example:** Assuming columns are 'Transaction Date', 'Description', 'Amount'
     # You MUST adapt these lines based on your actual bank statement CSV structure
@@ -36,7 +36,7 @@ def matching_function(
     }, inplace=True, errors='ignore') # Ignore errors if columns don't exist
     df_list.append(current_df)
     if not df_list:
-        print(f"Error: No CSV files found or read successfully in '{PATH_TO_CSV_FOLDER}'. Exiting.")
+        print(f"Error: No CSV files found or read successfully in '{PATH_TO_CSV}'. Exiting.")
         exit()
 
     whole_df = pd.concat(df_list, ignore_index=True) # Use ignore_index with concat
