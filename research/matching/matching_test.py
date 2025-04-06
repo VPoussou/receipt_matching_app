@@ -15,7 +15,7 @@ DATE_TOLERANCE_DAYS = 3 # How many days difference to allow for date matching
 VENDOR_MATCH_THRESHOLD = 75 # Minimum similarity score (0-100) for vendor match
 
 def matching_function(
-    PATH_TO_CSV_FOLDER,
+    PATH_TO_CSV,
     ocr_df,
     # PATH_TO_FINAL_OUTPUT,
     PATH_TO_UNASSIGNED_LOG = PATH_TO_UNASSIGNED_LOG,
@@ -25,22 +25,16 @@ def matching_function(
     # --- Load Bank Statement Data ---
     print("Loading bank statement data...")
     df_list = []
-    for filename in os.listdir(PATH_TO_CSV_FOLDER):
-        if filename.endswith(".csv"):
-            try:
-                current_df = pd.read_csv(os.path.join(PATH_TO_CSV_FOLDER, filename))
-                # **Crucial: Identify and standardize bank statement columns here**
-                # **Example:** Assuming columns are 'Transaction Date', 'Description', 'Amount'
-                # You MUST adapt these lines based on your actual bank statement CSV structure
-                current_df.rename(columns={
-                    'Transaction Date': 'date', # Standardize name
-                    'Description': 'vendor',    # Standardize name (might need cleaning later)
-                    'Amount': 'amount'         # Standardize name
-                }, inplace=True, errors='ignore') # Ignore errors if columns don't exist
-                df_list.append(current_df)
-            except Exception as e:
-                print(f"Error reading {filename}: {e}")
-
+    current_df = pd.read_csv(PATH_TO_CSV_FOLDER)
+    # **Crucial: Identify and standardize bank statement columns here**
+    # **Example:** Assuming columns are 'Transaction Date', 'Description', 'Amount'
+    # You MUST adapt these lines based on your actual bank statement CSV structure
+    current_df.rename(columns={
+        'Transaction Date': 'date', # Standardize name
+        'Description': 'vendor',    # Standardize name (might need cleaning later)
+        'Amount': 'amount'         # Standardize name
+    }, inplace=True, errors='ignore') # Ignore errors if columns don't exist
+    df_list.append(current_df)
     if not df_list:
         print(f"Error: No CSV files found or read successfully in '{PATH_TO_CSV_FOLDER}'. Exiting.")
         exit()
