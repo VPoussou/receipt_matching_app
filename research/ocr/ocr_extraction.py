@@ -28,10 +28,10 @@ async def ocr_extraction(image_path):
     async def encode_and_preprocess_image_to_base64(image_path):
         """Encodes an image from a file path to a base64 string."""
         img = cv2.imread(image_path)
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+        # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        # _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
         try:
-                _, buffer = cv2.imencode('.jpg', thresh)
+                _, buffer = cv2.imencode('.jpg', img)
                 return base64.b64encode(buffer).decode('utf-8')
         except Exception as e:
             print(f"Error encoding image to base64: {e}")
