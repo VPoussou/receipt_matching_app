@@ -16,7 +16,7 @@ excel_data = 'donkey'
 async def start_matching(csv_file_path, image_files_path):
     st.info("Running OCR & Matching...")
     ocr_df = await mistral_ocr(image_files_path)
-    if use_transformers:
+    if not use_transformers:
         assigned_df, unassigned_df = data_matching(csv_file_path, ocr_df)
     else:
         assigned_df, unassigned_df = matching_function(csv_file_path, ocr_df)
