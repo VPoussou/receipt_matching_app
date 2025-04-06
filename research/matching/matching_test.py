@@ -139,7 +139,7 @@ def matching_function(
             exact_date_matches = amount_matches[amount_matches['date'] == date_entry]
             print(f"  Found {len(exact_date_matches)} matches with exact amount and date.")
 
-        elif len(exact_date_matches) == 1:
+        elif len(amount_matches[amount_matches['date'] == date_entry]) == 1:
             # --- Step 2: Filter by Date (Exact Match) ---
             match_index = exact_date_matches.index[0]
             print(f"  Unique exact amount/date match found at index {match_index}.")
