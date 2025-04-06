@@ -4,6 +4,7 @@ import base64
 import pandas as pd
 from research.ocr.main import mistral_ocr
 from research.matching.matching import data_matching
+from research.matching.matching_test import matching_function
 import tempfile
 import asyncio
 import io
@@ -15,7 +16,10 @@ excel_data = 'donkey'
 async def start_matching(csv_file_path, image_files_path):
     st.info("Running OCR & Matching...")
     ocr_df = await mistral_ocr(image_files_path)
-    assigned_df, unassigned_df = data_matching(csv_file_path, ocr_df)
+    if use_transformers:
+        assigned_df, unassigned_df = data_matching(csv_file_path, ocr_df)
+    else:
+        assigned_df, unassigned_df = matching_function(csv_file_path, ocr_df)
     st.session_state.assigned_df = assigned_df
     st.session_state.unassigned_df = unassigned_df
 
@@ -30,6 +34,7 @@ def convert_df_to_excel(df):
 # Page config
 st.set_page_config(page_title="Invoice Matcher", layout="wide")
 st.title("🧾 Invoice Matching Tool 📄")
+use_transformers = st.toggle(label='Tranformers is sometimes unavailable on huggingface, toggling this uses alternative logic with RapidFuzz', value = True)
 
 # -------------------- SIDEBAR (Collapsible Upload & Preview UI) --------------------
 with st.expander("📁 Upload and Preview Section (Click to Collapse)", expanded=True):
